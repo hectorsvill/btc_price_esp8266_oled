@@ -3,7 +3,7 @@
  * This Arduino code retrieves Bitcoin (BTC) price from the CoinGecko API,
  * displays it on an OLED screen, and cycles through animated faces.
  * The ESP8266 connects to Wi-Fi and updates the display periodically.
- * Author: [Author Name]
+ * Author: [hectorsvill]
  */
 
 #include <Wire.h>
