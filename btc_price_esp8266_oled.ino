@@ -38,6 +38,8 @@ const unsigned char wifi_icon[] PROGMEM = {
   0x00, 0xff, 0x00, 0x7e, 0x00, 0x18, 0x00, 0x00
 };
 
+Server 
+
 // Animated Faces
 #define FACECOUNT 8
 char *faces[] = {
@@ -116,7 +118,7 @@ void oled_1_3_display(int cursorx, int cursory, String str) {
  */
 void connectWiFi() {
   // WiFi.mode(WIFI_STA);
-  WiFi.begin("RS21-Guest", "guestb117688");
+  WiFi.begin("", "");
   Serial.print("Connecting");
   oled_1_3_display(0, 0, "Connecting");
   while (WiFi.status() != WL_CONNECTED) {
