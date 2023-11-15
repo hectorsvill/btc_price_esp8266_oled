@@ -44,11 +44,11 @@ char *faces[] = {
   "[ o__o ]",    // Surprise or Amazement.
   "[=__=  ]",    // Boredom or Indifference.
   "[ o__0 ]",    // Confusion
-  "[ -_-  ]",    // Disapproval or Annoyance
+  "[ -__- ]",    // Disapproval or Annoyance
   "[+__+  ]",    // Excitement or Enthusiasm.
   "[   *_*]",    // Playful
   "[ #__# ]",    // Worried or Anxious.
-  "[   ^_^]",    // Happiness or Contentment.
+  "[  ^__^]",    // Happiness or Contentment.
 };
 
 // Function Prototypes
@@ -77,13 +77,15 @@ void setup() {
  * It updates the animated face, fetches Bitcoin price, and displays information on the OLED.
  */
 void loop() {
+  int ran = random(3000, 6000);
   String serialDisplay = "";
-  serialDisplay += animated_face();
+  display.clearDisplay();
   String ipConfig = "       ";
 
   if (WiFi.status() == WL_CONNECTED) {
     String btcJson = requests(apiUrl) + "\n";
     ipConfig += "\n\nBTC: $" + getBTC(btcJson) + "\n";
+    serialDisplay += animated_face();
     oled_1_3_display(SCREEN_WIDTH - 40, 0, String(WiFi.RSSI()));
     display.drawBitmap(SCREEN_WIDTH - 15, 0, wifi_icon, 8, 8, SH110X_WHITE);
     oled_1_3_display(0, 0, ipConfig);
@@ -91,6 +93,7 @@ void loop() {
     // Wi-Fi error
     WiFi.printDiag(Serial);
   }
+  delay(ran);
 }
 
 /**
@@ -180,12 +183,7 @@ String getBTC(String jsonStr) {
  * @return The animated face that was displayed.
  */
 String animated_face() {
-  int ran = random(3000, 6000);
   int fi = random(1, FACECOUNT);
-
   oled_1_3_display(0, 0, faces[fi]);
-  delay(ran);
-  display.clearDisplay();
-
   return faces[fi];
 }
