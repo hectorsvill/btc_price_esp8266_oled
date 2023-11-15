@@ -26,10 +26,6 @@
 // Adafruit SH1106G OLED display instance
 Adafruit_SH1106G display = Adafruit_SH1106G(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-// Wi-Fi credentials
-const char* ssid = "RS21-Guest";
-const char* password = "guestb117688";
-
 // CoinGecko API URL
 const char* apiUrl = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd";
 
