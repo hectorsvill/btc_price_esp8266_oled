@@ -26,6 +26,10 @@
 // Adafruit SH1106G OLED display instance
 Adafruit_SH1106G display = Adafruit_SH1106G(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
+// WIFI
+const char *ssid = "";
+const char *pass = "";
+
 // CoinGecko API URL
 const char* apiUrl = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd";
 
@@ -34,7 +38,6 @@ const unsigned char wifi_icon[] PROGMEM = {
   0x00, 0xff, 0x00, 0x7e, 0x00, 0x18, 0x00, 0x00
 };
 
-Server 
 
 // Animated Faces
 #define FACECOUNT 8
@@ -48,15 +51,6 @@ char *faces[] = {
   "[ #__# ]",    // Worried or Anxious.
   "[  ^__^]",    // Happiness or Contentment.
 };
-
-// Function Prototypes
-void setup();
-void loop();
-void oled_1_3_display(int cursorx, int cursory, String str);
-void connectWiFi();
-String requests(String url);
-String getBTC(String jsonStr);
-String animated_face();
 
 /**
  * @brief Setup function called once at the beginning of the program.
@@ -78,15 +72,14 @@ void loop() {
   int ran = random(3000, 6000);
   String serialDisplay = "";
   display.clearDisplay();
-  String ipConfig = "       ";
 
   if (WiFi.status() == WL_CONNECTED) {
     String btcJson = requests(apiUrl) + "\n";
-    ipConfig += "\n\nBTC: $" + getBTC(btcJson) + "\n";
+    String btcStr = "\n\nBTC: " + getBTC(btcJson) + "\n";
     serialDisplay += animated_face();
     oled_1_3_display(SCREEN_WIDTH - 40, 0, String(WiFi.RSSI()));
     display.drawBitmap(SCREEN_WIDTH - 15, 0, wifi_icon, 8, 8, SH110X_WHITE);
-    oled_1_3_display(0, 0, ipConfig);
+    oled_1_3_display(0, 0, btcStr);
   } else {
     // Wi-Fi error
     WiFi.printDiag(Serial);
@@ -114,7 +107,7 @@ void oled_1_3_display(int cursorx, int cursory, String str) {
  */
 void connectWiFi() {
   // WiFi.mode(WIFI_STA);
-  WiFi.begin("", "");
+  WiFi.begin(ssid, pass);
   Serial.print("Connecting");
   oled_1_3_display(0, 0, "Connecting");
   while (WiFi.status() != WL_CONNECTED) {
@@ -166,6 +159,7 @@ String getBTC(String jsonStr) {
   if (error) {
     Serial.print("Failed to parse JSON: ");
     Serial.println(error.c_str());
+    Serial.println("json: " + jsonStr);
     return "";
   }
 
